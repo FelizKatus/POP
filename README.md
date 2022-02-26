@@ -22,3 +22,7 @@ http://localhost:5000
 ## Screenshots
 
 ![Home](screenshots/home.png "Home")
+
+![Contact](screenshots/contact.png "Contact")
+
+![Login](screenshots/login.png "Login")
