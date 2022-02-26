@@ -13,7 +13,12 @@ http://localhost:5000
 
 **admin/password**
 
+## Home
+
+## Store Front
+
+## Back Office
+
 ## Screenshots
 
 ![Home](screenshots/home.png "Home")
-

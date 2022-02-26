@@ -2,10 +2,10 @@
   <form action="[% add_entry_url %]" method=post class=add-entry>
     <dl>
       <dt>Title:
-      <dd><input type=text size=30 name=title>
+        <dd><input type=text size=30 name=title>
       <dt>Text:
-      <dd><textarea name=text rows=5 cols=40></textarea>
-      <dd><input type=submit value=Share>
+        <dd><textarea name=text rows=5 cols=40></textarea>
+        <dd><input type=submit value=Share>
     </dl>
   </form>
 [% END %]
