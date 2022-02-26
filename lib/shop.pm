@@ -27,18 +27,36 @@ hook database_error => sub {
 };
 
 get '/' => sub {
+  template 'home.tt', {
+    msg => get_flash(),
+  };
+};
+
+get '/shop' => sub {
   my $sql = 'select id, title, text from entries order by id desc';
   my $sth = database->prepare($sql);
   $sth->execute;
-  template 'show_entries.tt', {
+  template 'shop.tt', {
     msg           => get_flash(),
     add_entry_url => uri_for('/add'),
     entries       => $sth->fetchall_hashref('id'),
   };
 };
 
+get '/blog' => sub {
+  template 'blog.tt', {
+    msg => get_flash(),
+  };
+};
+
+get '/contact' => sub {
+  template 'contact.tt', {
+    msg => get_flash(),
+  };
+};
+
 post '/add' => sub {
-  if ( not session('logged_in') ) {
+  if(not session('logged_in')) {
     send_error("Not logged in", 401);
   }
   my $sql = 'insert into entries (title, text) values (?, ?)';
