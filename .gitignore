@@ -1,0 +1,10 @@
+# IDE
+.idea
+.vscode
+
+# Tools
+.bundle
+logs
+
+# DB
+*.sqlite
