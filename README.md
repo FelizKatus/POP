@@ -14,6 +14,7 @@ in The Kingdom of Spain.
 
 ## Store Front
 
+* Blog
 * SPAM-protected contact form
 
 ## Back Office
@@ -65,6 +66,8 @@ http://localhost:5000
 ## Screenshots
 
 ![Home](screenshots/home.png "Home")
+
+![Blog](screenshots/blog.png "Blog")
 
 ![Contact](screenshots/contact.png "Contact")
 

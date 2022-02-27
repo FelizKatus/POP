@@ -29,8 +29,14 @@ session: "Simple"
 
 # database
 
-plugins:                    # all plugin configuration settings go in this section
-  Database:                 # the name of our plugin
-    driver: "SQLite"        # driver we want to use
-    database: "shop.sqlite" # where the database will go in our app. run a query when connecting to the datbase:
-    on_connect_do: [ "create table if not exists entries (id integer primary key autoincrement, title string not null, text string not null)" ]
+plugins:
+  Database:
+    connections:
+      shop:
+        driver: "SQLite"
+        database: "shop.sqlite"
+        on_connect_do: [ "create table if not exists entries (id integer primary key autoincrement, title string not null, text string not null)" ]
+      blog:
+        driver: "SQLite"
+        database: "blog.sqlite"
+        on_connect_do: [ "create table if not exists posts (id integer primary key autoincrement, post_title string not null, post_image string not null, post_text string not null, post_home boolean)" ]

@@ -20,9 +20,9 @@ sub get_flash {
 hook before_template_render => sub {
   my $tokens = shift;
 
-  $tokens->{'css_url'}    = request->base . 'css/style.css';
-  $tokens->{'login_url'}  = uri_for('/login');
-  $tokens->{'logout_url'} = uri_for('/logout');
+  $tokens->{'css_url'}     = request->base . 'css/style.css';
+  $tokens->{'login_url'}   = uri_for('/login');
+  $tokens->{'logout_url'}  = uri_for('/logout');
   $tokens->{'contact_url'} = uri_for('/contact');
 };
 
@@ -51,9 +51,34 @@ get '/shop' => sub {
 };
 
 get '/blog' => sub {
+  my $sql = 'select id, post_title, post_image, post_text, post_home from posts order by id desc';
+  my $sth = database('blog')->prepare($sql);
+  $sth->execute;
+
   template 'blog.tt', {
-    msg => get_flash(),
+    msg          => get_flash(),
+    add_post_url => uri_for('/add_post'),
+    posts        => $sth->fetchall_hashref('id'),
   };
+};
+
+post '/add_post' => sub {
+  if(not session('logged_in')) {
+    send_error('Not logged in', 401);
+  }
+
+  my $sql = 'insert into posts (post_title, post_image, post_text, post_home) values (?, ?, ?, ?)';
+  my $sth = database('blog')->prepare($sql);
+
+  $sth->execute(
+    body_parameters->get('title'),
+    body_parameters->get('image'),
+    body_parameters->get('text'),
+    body_parameters->get('home')
+  );
+
+  set_flash('New entry posted!');
+  redirect '/';
 };
 
 get '/contact' => sub {
@@ -97,23 +122,6 @@ post '/contact' => sub {
     err => $err,
     msg => get_flash(),
   };
-};
-
-post '/add' => sub {
-  if(not session('logged_in')) {
-    send_error("Not logged in", 401);
-  }
-
-  my $sql = 'insert into entries (title, text) values (?, ?)';
-  my $sth = database->prepare($sql);
-
-  $sth->execute(
-    body_parameters->get('title'),
-    body_parameters->get('text')
-  );
-
-  set_flash('New entry posted!');
-  redirect '/';
 };
 
 any ['get', 'post'] => '/login' => sub {

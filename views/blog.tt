@@ -7,11 +7,18 @@
     <hr class="featurette-divider">
 
     [% IF session.logged_in %]
-      <form action="[% add_entry_url %]" method="post">
+      <form action="[% add_post_url %]" method="post">
         <div class="row mb-3">
           <label for="inputTitle" class="col-sm-2 col-form-label">Title</label>
           <div class="col-sm-10">
             <input type="text" name="title" class="form-control" id="inputTitle" placeholder="Title">
+          </div>
+        </div>
+
+        <div class="row mb-3">
+          <label for="inputImage" class="col-sm-2 col-form-label">Image</label>
+          <div class="col-sm-10">
+            <input type="text" name="image" class="form-control" id="inputImage" placeholder="Image">
           </div>
         </div>
 
@@ -22,6 +29,17 @@
           </div>
         </div>
 
+        <div class="row mb-3">
+          <div class="col-sm-10 offset-sm-2">
+            <div class="form-check">
+              <input class="form-check-input" type="checkbox" id="gridCheck">
+              <label class="form-check-label" for="gridCheck">
+                Home
+              </label>
+            </div>
+          </div>
+        </div>
+
         <button type="submit" class="btn btn-primary">Share</button>
         <button type="clean" class="btn btn-secondary">Clean</button>
       </form>
@@ -29,10 +47,11 @@
       <hr class="featurette-divider">
     [% END %]
 
-    [% IF entries.size %]
-      [% FOREACH id IN entries.keys.nsort %]
-        <h3>[% entries.$id.title | html %]</h3>
-        <p>[% entries.$id.text | html %]</p>
+    [% IF posts.size %]
+      [% FOREACH id IN posts.keys.nsort %]
+        <div>[% posts.$id.post_image | html %]</div>
+        <h3>[% posts.$id.post_title | html %]</h3>
+        <p>[% posts.$id.post_text | html %]</p>
       [% END %]
     [% ELSE %]
       <div class="alert alert-primary" role="alert">Unbelievable. No entries here so far.</div>
