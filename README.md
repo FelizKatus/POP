@@ -14,6 +14,8 @@ in The Kingdom of Spain.
 
 ## Store Front
 
+* SPAM-protected contact form
+
 ## Back Office
 
 ## Dependencies:
@@ -49,6 +51,10 @@ Starting the app:
 For development:
 
 *plackup -p 5000 -R lib bin/app.psgi*
+
+Logging:
+
+*logs/development.log*
 
 Enjoy!
 
