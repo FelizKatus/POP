@@ -38,11 +38,11 @@ Installing for Debian/Ubuntu/WSL:
 
 ## Application launching:
 
-Starting mail server, for example:
+Starting your mail server, for example:
 
 *sudo service postfix start*
 
-Starting app:
+Starting the app:
 
 *plackup -p 5000 bin/app.psgi*
 
@@ -50,7 +50,7 @@ For development:
 
 *plackup -p 5000 -R lib bin/app.psgi*
 
-Enjoy:
+Enjoy!
 
 http://localhost:5000
 

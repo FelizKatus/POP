@@ -4,9 +4,9 @@
 
     <p class="lead">Some great placeholder content for the first featurette here. Imagine some exciting prose here.</p>
 
-    [% IF err %]<div class="alert alert-danger" role="alert"><i class="exclamation-circle"></i> [% err %]</div>[% END %]
-
     <hr class="featurette-divider">
+
+    [% IF err %]<div class="alert alert-danger" role="alert"><i class="exclamation-circle"></i> [% err %]</div>[% END %]
 
     <form action="[% login_url %]" method="post">
       <div class="row mb-3">
