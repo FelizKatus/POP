@@ -21,11 +21,11 @@ sub get_flash {
 hook before_template_render => sub {
   my $tokens = shift;
 
-  $tokens->{'storefront_css_url'} = request->base . 'css/style.css';
-  $tokens->{'backoffice_css_url'} = request->base . 'css/dashboard.css';
-  $tokens->{'login_url'}          = uri_for('/login');
-  $tokens->{'logout_url'}         = uri_for('/logout');
-  $tokens->{'contact_url'}        = uri_for('/contact');
+  $tokens->{'shop_css_url'}  = request->base . 'css/shop.css';
+  $tokens->{'admin_css_url'} = request->base . 'css/dashboard.css';
+  $tokens->{'login_url'}     = uri_for('/login');
+  $tokens->{'logout_url'}    = uri_for('/logout');
+  $tokens->{'contact_url'}   = uri_for('/contact');
 };
 
 hook database_error => sub {
@@ -35,12 +35,16 @@ hook database_error => sub {
 };
 
 get '/' => sub {
+  set layout => 'shop';
+
   template 'home.tt', {
     msg => get_flash(),
   };
 };
 
 get '/shop' => sub {
+  set layout => 'shop';
+
   my $sql = 'select id, title, text from entries order by id desc';
   my $sth = database('shop')->prepare($sql);
   $sth->execute;
@@ -53,6 +57,8 @@ get '/shop' => sub {
 };
 
 get '/blog' => sub {
+  set layout => 'shop';
+
   my $sql = 'select id, post_title, post_image, post_text, post_home from posts order by id desc';
   my $sth = database('blog')->prepare($sql);
   $sth->execute;
@@ -84,12 +90,16 @@ post '/add_post' => sub {
 };
 
 get '/contact' => sub {
+  set layout => 'shop';
+
   template 'contact.tt', {
     msg => get_flash(),
   };
 };
 
 post '/contact' => sub {
+  set layout => 'shop';
+
   my $err;
   my $smail = '/usr/sbin/sendmail';
   my $to = 'contact@example.com';
@@ -127,6 +137,8 @@ post '/contact' => sub {
 };
 
 any ['get', 'post'] => '/login' => sub {
+  set layout => 'shop';
+
   my $err;
   my $check = body_parameters->get('check');
 
@@ -154,11 +166,11 @@ any ['get', 'post'] => '/login' => sub {
 };
 
 get '/logout' => sub {
+  set layout => 'shop';
+
   app->destroy_session;
 
   set_flash('You are logged out.');
-
-  set layout => 'storefront';
 
   redirect '/';
 };
@@ -169,7 +181,7 @@ any ['get', 'post'] => '/dashboard' => sub {
   if(not session('logged_in')) {
     send_error('Not logged in', 401);
   } else {
-    set layout => 'backoffice';
+    set layout => 'admin';
 
     # display dashboard
     template 'dashboard.tt', {

@@ -35,7 +35,7 @@
     <link rel="icon" href="/images/favicons/favicon.ico">
 
     <!-- Custom styles for this template -->
-    <link rel=stylesheet type=text/css href="[% backoffice_css_url %]">
+    <link rel=stylesheet type=text/css href="[% admin_css_url %]">
   </head>
 
   <body>
@@ -67,8 +67,8 @@
               </li>
               <li class="nav-item">
                 <a class="nav-link" href="#">
-                  <span data-feather="file"></span>
-                  Orders
+                  <span data-feather="layers"></span>
+                  Carousel
                 </a>
               </li>
               <li class="nav-item">
@@ -79,20 +79,38 @@
               </li>
               <li class="nav-item">
                 <a class="nav-link" href="#">
+                  <span data-feather="file"></span>
+                  Orders
+                </a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="#">
                   <span data-feather="users"></span>
                   Customers
                 </a>
               </li>
               <li class="nav-item">
                 <a class="nav-link" href="#">
-                  <span data-feather="bar-chart-2"></span>
-                  Reports
+                  <span data-feather="coffee"></span>
+                  Posts
                 </a>
               </li>
               <li class="nav-item">
                 <a class="nav-link" href="#">
-                  <span data-feather="layers"></span>
-                  Integrations
+                  <span data-feather="mail"></span>
+                  Subscriptions
+                </a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="#">
+                  <span data-feather="tool"></span>
+                  Settings
+                </a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="#">
+                  <span data-feather="book"></span>
+                  Help
                 </a>
               </li>
             </ul>
