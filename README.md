@@ -14,6 +14,7 @@ in The Kingdom of Spain.
 
 ## Store Front
 
+* Session-based autorization
 * Blog
 * SPAM-protected contact form
 
@@ -72,3 +73,5 @@ http://localhost:5000
 ![Contact](screenshots/contact.png "Contact")
 
 ![Login](screenshots/login.png "Login")
+
+![Dashboard](screenshots/dashboard.png "Dashboard")

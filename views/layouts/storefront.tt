@@ -35,7 +35,7 @@
     </style>
     
     <!-- Custom styles for this template -->
-    <link rel=stylesheet type=text/css href="[% css_url %]">
+    <link rel=stylesheet type=text/css href="[% storefront_css_url %]">
   </head>
 
   <body>
@@ -92,7 +92,7 @@
                     Logged in
                   </a>
                   <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                    <li><a class="dropdown-item" href="#">Dashboard</a></li>
+                    <li><a class="dropdown-item" href="/dashboard">Dashboard</a></li>
                     <li><hr class="dropdown-divider"></li>
                     <li><a class="dropdown-item" href="[% logout_url %]">Log out</a></li>
                   </ul>

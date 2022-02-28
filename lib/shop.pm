@@ -2,6 +2,7 @@ package shop;
 
 use Dancer2;
 use Dancer2::Plugin::Database;
+use Data::Dumper;
 
 sub set_flash {
   my $message = shift;
@@ -20,10 +21,11 @@ sub get_flash {
 hook before_template_render => sub {
   my $tokens = shift;
 
-  $tokens->{'css_url'}     = request->base . 'css/style.css';
-  $tokens->{'login_url'}   = uri_for('/login');
-  $tokens->{'logout_url'}  = uri_for('/logout');
-  $tokens->{'contact_url'} = uri_for('/contact');
+  $tokens->{'storefront_css_url'} = request->base . 'css/style.css';
+  $tokens->{'backoffice_css_url'} = request->base . 'css/dashboard.css';
+  $tokens->{'login_url'}          = uri_for('/login');
+  $tokens->{'logout_url'}         = uri_for('/logout');
+  $tokens->{'contact_url'}        = uri_for('/contact');
 };
 
 hook database_error => sub {
@@ -40,7 +42,7 @@ get '/' => sub {
 
 get '/shop' => sub {
   my $sql = 'select id, title, text from entries order by id desc';
-  my $sth = database->prepare($sql);
+  my $sth = database('shop')->prepare($sql);
   $sth->execute;
 
   template 'shop.tt', {
@@ -126,17 +128,22 @@ post '/contact' => sub {
 
 any ['get', 'post'] => '/login' => sub {
   my $err;
+  my $check = body_parameters->get('check');
 
   if(request->method() eq "POST") {
-    # process form input
-    if(body_parameters->get('username') ne setting('username')) {
-      $err = 'Invalid username';
-    } elsif(body_parameters->get('password') ne setting('password')) {
-      $err = 'Invalid password';
+    if(defined $check) {
+      # process form input
+      if(body_parameters->get('username') ne setting('username')) {
+        $err = 'Invalid username';
+      } elsif(body_parameters->get('password') ne setting('password')) {
+        $err = 'Invalid password';
+      } else {
+        session 'logged_in' => true;
+        set_flash('You are logged in.');
+        return redirect '/';
+      }
     } else {
-      session 'logged_in' => true;
-      set_flash('You are logged in.');
-      return redirect '/';
+      $err = 'You are a robot.';
     }
   }
 
@@ -148,8 +155,27 @@ any ['get', 'post'] => '/login' => sub {
 
 get '/logout' => sub {
   app->destroy_session;
+
   set_flash('You are logged out.');
+
+  set layout => 'storefront';
+
   redirect '/';
+};
+
+any ['get', 'post'] => '/dashboard' => sub {
+  my $err;
+
+  if(not session('logged_in')) {
+    send_error('Not logged in', 401);
+  } else {
+    set layout => 'backoffice';
+
+    # display dashboard
+    template 'dashboard.tt', {
+      err    => $err
+    };
+  }
 };
 
 true;
