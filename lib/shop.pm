@@ -22,7 +22,7 @@ hook before_template_render => sub {
   my $tokens = shift;
 
   $tokens->{'shop_css_url'}  = request->base . 'css/shop.css';
-  $tokens->{'admin_css_url'} = request->base . 'css/dashboard.css';
+  $tokens->{'admin_css_url'} = request->base . 'css/admin.css';
   $tokens->{'login_url'}     = uri_for('/login');
   $tokens->{'logout_url'}    = uri_for('/logout');
   $tokens->{'contact_url'}   = uri_for('/contact');
@@ -59,34 +59,14 @@ get '/shop' => sub {
 get '/blog' => sub {
   set layout => 'shop';
 
-  my $sql = 'select id, post_title, post_image, post_text, post_home from posts order by id desc';
+  my $sql = 'select id, post_image, post_title, post_text, post_tags, post_home, post_subscriptions from posts order by id desc';
   my $sth = database('blog')->prepare($sql);
   $sth->execute;
 
   template 'blog.tt', {
-    msg          => get_flash(),
-    add_post_url => uri_for('/add_post'),
-    posts        => $sth->fetchall_hashref('id'),
+    msg   => get_flash(),
+    posts => $sth->fetchall_hashref('id'),
   };
-};
-
-post '/add_post' => sub {
-  if(not session('logged_in')) {
-    send_error('Not logged in', 401);
-  }
-
-  my $sql = 'insert into posts (post_title, post_image, post_text, post_home) values (?, ?, ?, ?)';
-  my $sth = database('blog')->prepare($sql);
-
-  $sth->execute(
-    body_parameters->get('title'),
-    body_parameters->get('image'),
-    body_parameters->get('text'),
-    body_parameters->get('home')
-  );
-
-  set_flash('New entry posted!');
-  redirect '/';
 };
 
 get '/contact' => sub {
@@ -101,12 +81,13 @@ post '/contact' => sub {
   set layout => 'shop';
 
   my $err;
-  my $smail = '/usr/sbin/sendmail';
-  my $to = 'contact@example.com';
-  my $from = body_parameters->get('email');
+
+  my $smail   = '/usr/sbin/sendmail';
+  my $to      = 'contact@example.com';
+  my $from    = body_parameters->get('email');
   my $subject = body_parameters->get('subject');
   my $message = body_parameters->get('message');
-  my $check = body_parameters->get('check');
+  my $check   = body_parameters->get('check');
 
   if(defined $check) {
     # process form input
@@ -175,18 +156,58 @@ get '/logout' => sub {
   redirect '/';
 };
 
-any ['get', 'post'] => '/dashboard' => sub {
-  my $err;
-
+any ['get', 'post'] => '/admin' => sub {
   if(not session('logged_in')) {
     send_error('Not logged in', 401);
   } else {
+    my $err;
+
     set layout => 'admin';
 
-    # display dashboard
-    template 'dashboard.tt', {
-      err    => $err
+    # display admin
+    template 'admin.tt', {
+      err => $err
     };
+  }
+};
+
+get '/admin/posts' => sub {
+  if(not session('logged_in')) {
+    send_error('Not logged in', 401);
+  } else {
+    my $sql = 'select id, post_image, post_title, post_text, post_tags, post_home, post_subscriptions from posts order by id desc';
+    my $sth = database('blog')->prepare($sql);
+    $sth->execute;
+
+    set layout => 'admin';
+
+    template 'posts.tt', {
+      msg          => get_flash(),
+      posts        => $sth->fetchall_hashref('id'),
+      add_post_url => uri_for('/admin/add_post')
+    };
+  }
+};
+
+post '/admin/add_post' => sub {
+  if(not session('logged_in')) {
+    send_error('Not logged in', 401);
+  } else {
+    my $sql = 'insert into posts (post_image, post_title, post_text, post_tags, post_home, post_subscriptions) values (?, ?, ?, ?, ?, ?)';
+    my $sth = database('blog')->prepare($sql);
+
+    $sth->execute(
+      body_parameters->get('image'),
+      body_parameters->get('title'),
+      body_parameters->get('text'),
+      body_parameters->get('tags'),
+      body_parameters->get('home'),
+      body_parameters->get('subscriptions'),
+    );
+
+    set_flash('New entry posted!');
+
+    redirect '/admin/posts';
   }
 };
 

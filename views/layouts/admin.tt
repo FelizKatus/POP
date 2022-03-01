@@ -60,7 +60,7 @@
           <div class="position-sticky pt-3">
             <ul class="nav flex-column">
               <li class="nav-item">
-                <a class="nav-link active" aria-current="page" href="#">
+                <a class="nav-link active" aria-current="page" href="/admin">
                   <span data-feather="home"></span>
                   Dashboard
                 </a>
@@ -90,7 +90,7 @@
                 </a>
               </li>
               <li class="nav-item">
-                <a class="nav-link" href="#">
+                <a class="nav-link" href="/admin/posts">
                   <span data-feather="coffee"></span>
                   Posts
                 </a>
@@ -151,11 +151,11 @@
         </nav>
 
         <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
-        [% IF msg %]
-          <div class="alert alert-primary" role="alert">[% msg %]</div>
-        [% END %]
+          [% IF msg %]
+            <div class="alert alert-primary" role="alert">[% msg %]</div>
+          [% END %]
 
-        [% content %]
+          [% content %]
         </main>
       </div>
     </div>

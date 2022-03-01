@@ -39,4 +39,4 @@ plugins:
       blog:
         driver: "SQLite"
         database: "blog.sqlite"
-        on_connect_do: [ "create table if not exists posts (id integer primary key autoincrement, post_title string not null, post_image string not null, post_text string not null, post_home boolean)" ]
+        on_connect_do: [ "create table if not exists posts (id integer primary key autoincrement, post_title string not null, post_image string not null, post_text string not null, post_tags string, post_home boolean, post_subscriptions boolean)" ]

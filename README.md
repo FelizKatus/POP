@@ -12,13 +12,15 @@ in The Kingdom of Spain.
 
 ## Home
 
-## Store Front
+## Shop
 
 * Session-based autorization
 * Blog
 * SPAM-protected contact form
 
-## Back Office
+## Admin
+
+* Add blog posts
 
 ## Dependencies:
 
@@ -64,7 +66,7 @@ http://localhost:5000
 
 **admin/password**
 
-## Screenshots
+## Shop screenshots
 
 ![Home](screenshots/home.png "Home")
 
@@ -74,4 +76,8 @@ http://localhost:5000
 
 ![Login](screenshots/login.png "Login")
 
+## Admin screenshots
+
 ![Dashboard](screenshots/dashboard.png "Dashboard")
+
+![Posts](screenshots/posts.png "Posts")
