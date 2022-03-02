@@ -37,8 +37,13 @@ hook database_error => sub {
 get '/' => sub {
   set layout => 'shop';
 
+  my $sql = 'select post_id, post_image, post_title, post_text, post_tags, post_home, post_subscriptions from posts order by post_id desc';
+  my $sth = database('blog')->prepare($sql);
+  $sth->execute;
+
   template 'home.tt', {
     msg => get_flash(),
+    posts => $sth->fetchall_hashref('post_id'),
   };
 };
 
@@ -197,15 +202,49 @@ post '/admin/add_post' => sub {
     my $sth = database('blog')->prepare($sql);
 
     $sth->execute(
-      body_parameters->get('image'),
-      body_parameters->get('title'),
-      body_parameters->get('text'),
-      body_parameters->get('tags'),
-      body_parameters->get('home'),
-      body_parameters->get('subscriptions'),
+      body_parameters->get('post_image'),
+      body_parameters->get('post_title'),
+      body_parameters->get('post_text'),
+      body_parameters->get('post_tags'),
+      body_parameters->get('post_home'),
+      body_parameters->get('post_subscriptions'),
     );
 
     set_flash('New entry posted!');
+
+    redirect '/admin/posts';
+  }
+};
+
+get '/admin/edit_post' => sub {
+  if(not session('logged_in')) {
+    send_error('Not logged in', 401);
+  } else {
+    my $sql = 'select * from posts where (post_id) values (?)';
+    my $sth = database('blog')->prepare($sql);
+
+    $sth->execute(
+      body_parameters->get('post_id'),
+    );
+
+    set_flash('Entry editing');
+
+    redirect '/admin/posts';
+  }
+};
+
+post '/admin/delete_post' => sub {
+  if(not session('logged_in')) {
+    send_error('Not logged in', 401);
+  } else {
+    my $sql = 'delete from posts where (post_id) values (?)';
+    my $sth = database('blog')->prepare($sql);
+
+    $sth->execute(
+      body_parameters->get('post_id'),
+    );
+
+    set_flash('Entry deleted!');
 
     redirect '/admin/posts';
   }

@@ -12,46 +12,42 @@
           <div class="row mb-3">
             <label for="inputImage" class="col-sm-2 col-form-label">Image</label>
             <div class="col-sm-10">
-              <input type="text" name="image" class="form-control" id="inputImage" placeholder="Image">
+              <input type="text" name="post_image" class="form-control" id="inputImage" placeholder="Image">
             </div>
           </div>
 
           <div class="row mb-3">
             <label for="inputTitle" class="col-sm-2 col-form-label">Title</label>
             <div class="col-sm-10">
-              <input type="text" name="title" class="form-control" id="inputTitle" placeholder="Title">
+              <input type="text" name="post_title" class="form-control" id="inputTitle" placeholder="Title">
             </div>
           </div>
 
           <div class="row mb-3">
             <label for="inputText" class="col-sm-2 col-form-label">Text</label>
             <div class="col-sm-10">
-              <textarea name="text" class="form-control" id="inputText" rows="3" placeholder="Text"></textarea>
+              <textarea name="post_text" class="form-control" id="inputText" rows="3" placeholder="Text"></textarea>
             </div>
           </div>
 
           <div class="row mb-3">
             <label for="inputTags" class="col-sm-2 col-form-label">Tags</label>
             <div class="col-sm-10">
-              <input type="text" name="tags" class="form-control" id="inputTags" placeholder="Tags">
+              <input type="text" name="post_tags" class="form-control" id="inputTags" placeholder="Tags">
             </div>
           </div>
 
           <div class="row mb-3">
             <div class="col-sm-10 offset-sm-2">
               <div class="form-check">
-                <input class="form-check-input" type="checkbox" name="home" id="checkHome">
+                <input class="form-check-input" type="checkbox" name="post_home" id="checkHome">
                 <label class="form-check-label" for="checkHome">
                   Home
                 </label>
               </div>
-            </div>
-          </div>
 
-          <div class="row mb-3">
-            <div class="col-sm-10 offset-sm-2">
               <div class="form-check">
-                <input class="form-check-input" type="checkbox" name="subscriptions" id="checkSubscriptions">
+                <input class="form-check-input" type="checkbox" name="post_subscriptions" id="checkSubscriptions">
                 <label class="form-check-label" for="checkSubscriptions">
                   Subscriptions
                 </label>
@@ -82,41 +78,45 @@
         <tbody>
           [% FOREACH id IN posts.keys.nsort %]
             <tr>
-              <td><strong>[% posts.$id.post_id | html %]</strong></td>
-              <td>[% posts.$id.post_title | html %]</td>
-              <td>[% posts.$id.post_text | truncate(100) | html %]</td>
-              <td>
-                [% IF posts.$id.post_home %]
-                  <div class="form-check">
-                    <input class="form-check-input" type="checkbox" value="" id="flexCheckDisabled" checked disabled>
-                    <!-- label class="form-check-label" for="flexCheckDisabled">
-                      Disabled checkbox
-                    </label -->
+              <form>
+                <input type="hidden" name="post_id" value="[% posts.$id.post_id %]">
+
+                <td><strong>[% posts.$id.post_id | html %]</strong></td>
+                <td>[% posts.$id.post_title | html %]</td>
+                <td>[% posts.$id.post_text | truncate(100) | html %]</td>
+                <td>
+                  [% IF posts.$id.post_home %]
+                    <div class="form-check">
+                      <input class="form-check-input" type="checkbox" value="" id="flexCheckDisabled" checked disabled>
+                      <!-- label class="form-check-label" for="flexCheckDisabled">
+                        Disabled checkbox
+                      </label -->
+                    </div>
+                  [% ELSE %]
+                    <div class="form-check">
+                      <input class="form-check-input" type="checkbox" value="" id="flexCheckDisabled" disabled>
+                    </div>
+                  [% END %]
+                </td>
+                <td>
+                  [% IF posts.$id.post_subscriptions %]
+                    <div class="form-check">
+                      <input class="form-check-input" type="checkbox" value="" id="flexCheckDisabled" checked disabled>
+                    </div>
+                  [% ELSE %]
+                    <div class="form-check">
+                      <input class="form-check-input" type="checkbox" value="" id="flexCheckDisabled" disabled>
+                    </div>
+                  [% END %]
+                </td>
+                <td>
+                  <div class="btn-group" role="group" aria-label="Basic mixed styles example">
+                    <button type="button" class="btn btn-primary">Edit</button>
+                    <button type="button" class="btn btn-danger">Delete</button>
                   </div>
-                [% ELSE %]
-                  <div class="form-check">
-                    <input class="form-check-input" type="checkbox" value="" id="flexCheckDisabled" disabled>
-                  </div>
-                [% END %]
-              </td>
-              <td>
-                [% IF posts.$id.post_subscriptions %]
-                  <div class="form-check">
-                    <input class="form-check-input" type="checkbox" value="" id="flexCheckDisabled" checked disabled>
-                  </div>
-                [% ELSE %]
-                  <div class="form-check">
-                    <input class="form-check-input" type="checkbox" value="" id="flexCheckDisabled" disabled>
-                  </div>
-                [% END %]
-              </td>
-              <td>
-                <div class="btn-group" role="group" aria-label="Basic mixed styles example">
-                  <button type="button" class="btn btn-primary">Edit</button>
-                  <button type="button" class="btn btn-danger">Delete</button>
-                </div>
-              </td>
-            </tr>
+                </td>
+              </tr>
+            </form>
           [% END %]
         </tbody>
       </table>

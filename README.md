@@ -81,3 +81,5 @@ http://localhost:5000
 ![Dashboard](screenshots/dashboard.png "Dashboard")
 
 ![Posts](screenshots/posts.png "Posts")
+
+![New post](screenshots/new_post.png "New post")
