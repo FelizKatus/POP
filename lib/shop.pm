@@ -59,13 +59,13 @@ get '/shop' => sub {
 get '/blog' => sub {
   set layout => 'shop';
 
-  my $sql = 'select id, post_image, post_title, post_text, post_tags, post_home, post_subscriptions from posts order by id desc';
+  my $sql = 'select post_id, post_image, post_title, post_text, post_tags, post_home, post_subscriptions from posts order by post_id desc';
   my $sth = database('blog')->prepare($sql);
   $sth->execute;
 
   template 'blog.tt', {
     msg   => get_flash(),
-    posts => $sth->fetchall_hashref('id'),
+    posts => $sth->fetchall_hashref('post_id'),
   };
 };
 
@@ -175,7 +175,7 @@ get '/admin/posts' => sub {
   if(not session('logged_in')) {
     send_error('Not logged in', 401);
   } else {
-    my $sql = 'select id, post_image, post_title, post_text, post_tags, post_home, post_subscriptions from posts order by id desc';
+    my $sql = 'select post_id, post_image, post_title, post_text, post_tags, post_home, post_subscriptions from posts order by post_id desc';
     my $sth = database('blog')->prepare($sql);
     $sth->execute;
 
@@ -183,7 +183,7 @@ get '/admin/posts' => sub {
 
     template 'posts.tt', {
       msg          => get_flash(),
-      posts        => $sth->fetchall_hashref('id'),
+      posts        => $sth->fetchall_hashref('post_id'),
       add_post_url => uri_for('/admin/add_post')
     };
   }

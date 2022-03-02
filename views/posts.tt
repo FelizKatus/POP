@@ -68,17 +68,61 @@
     <hr class="featurette-divider">
 
     [% IF posts.size %]
-      [% FOREACH id IN posts.keys.nsort %]
-        <div>[% posts.$id.post_image | html %]</div>
-        <h3>[% posts.$id.post_title | html %]</h3>
-        <p>[% posts.$id.post_text | html %]</p>
-        <p>[% posts.$id.post_tags | html %]</p>
-      [% END %]
+      <table class="table table-striped">
+        <thead>
+          <tr>
+            <th scope="col">#</th>
+            <th scope="col">Title</th>
+            <th scope="col">Text</th>
+            <th scope="col">Home</th>
+            <th scope="col">Subscriptions</th>
+            <th scope="col">Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          [% FOREACH id IN posts.keys.nsort %]
+            <tr>
+              <td><strong>[% posts.$id.post_id | html %]</strong></td>
+              <td>[% posts.$id.post_title | html %]</td>
+              <td>[% posts.$id.post_text | truncate(100) | html %]</td>
+              <td>
+                [% IF posts.$id.post_home %]
+                  <div class="form-check">
+                    <input class="form-check-input" type="checkbox" value="" id="flexCheckDisabled" checked disabled>
+                    <!-- label class="form-check-label" for="flexCheckDisabled">
+                      Disabled checkbox
+                    </label -->
+                  </div>
+                [% ELSE %]
+                  <div class="form-check">
+                    <input class="form-check-input" type="checkbox" value="" id="flexCheckDisabled" disabled>
+                  </div>
+                [% END %]
+              </td>
+              <td>
+                [% IF posts.$id.post_subscriptions %]
+                  <div class="form-check">
+                    <input class="form-check-input" type="checkbox" value="" id="flexCheckDisabled" checked disabled>
+                  </div>
+                [% ELSE %]
+                  <div class="form-check">
+                    <input class="form-check-input" type="checkbox" value="" id="flexCheckDisabled" disabled>
+                  </div>
+                [% END %]
+              </td>
+              <td>
+                <div class="btn-group" role="group" aria-label="Basic mixed styles example">
+                  <button type="button" class="btn btn-primary">Edit</button>
+                  <button type="button" class="btn btn-danger">Delete</button>
+                </div>
+              </td>
+            </tr>
+          [% END %]
+        </tbody>
+      </table>
     [% ELSE %]
       <div class="alert alert-primary" role="alert">Unbelievable. No entries here so far.</div>
     [% END %]
-
-    <hr class="featurette-divider">
 
     <nav aria-label="">
       <ul class="pagination">

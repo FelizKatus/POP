@@ -8,10 +8,20 @@
 
     [% IF posts.size %]
       [% FOREACH id IN posts.keys.nsort %]
-        <div>[% posts.$id.post_image | html %]</div>
-        <h3>[% posts.$id.post_title | html %]</h3>
-        <p>[% posts.$id.post_text | html %]</p>
-        <p>[% posts.$id.post_tags | html %]</p>
+        <div class="card mb-3">
+          <div class="row g-0">
+            <div class="col-md-4">
+              [% posts.$id.post_image %]
+            </div>
+            <div class="col-md-8">
+              <div class="card-body">
+                <h5 class="card-title">[% posts.$id.post_title | html %]</h5>
+                <p class="card-text">[% posts.$id.post_text | html %]</p>
+                <p class="card-text"><small class="text-muted">[% posts.$id.post_tags | html %]</small></p>
+              </div>
+            </div>
+          </div>
+        </div>
       [% END %]
     [% ELSE %]
       <div class="alert alert-primary" role="alert">Unbelievable. No entries here so far.</div>
